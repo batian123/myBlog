@@ -10,7 +10,7 @@
 const mongoose = require("mongoose");
 // const mongodbURI = require("../secret/mongodbURI").mongodbURI;
 
-mongoose.connect('mongodb://47.100.67.50:27017/My_blog', {
+mongoose.connect('mongodb://localhost:27017/My_blog', {
     useNewUrlParser:true,
     useFindAndModify:false,
     useUnifiedTopology: true
