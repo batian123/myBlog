@@ -51,7 +51,7 @@ module.exports = (req, res) => {
         }
         let aa = file.path.split('upload_')[1];
         file.url = `http://www.bxwblog.cn/uploads/upload_${aa}`
-        // console.log('这是file:',aa,file)
+        console.log('这是file:',aa,file)
         return res.send({'status': 200, 'msg': '图片上传成功1', data: {url: file.url,name:file.name}});
         // /* 拼接新的文件名 */
         // let time = formatTime.format(new Date(), 'YYYYMMDDHHmmss');
