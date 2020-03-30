@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 // app.use(passport.session());
 // console.log(passport)
 
+app.use(express.static(__dirname + '/dist'))
 app.use('/uploads', express.static(__dirname + '/uploads'))
 
 app.use(bodyParser.json());
