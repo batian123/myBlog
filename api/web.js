@@ -201,7 +201,7 @@ router.post("/uploadImg",  async (req, res) => {
 })
 
 // 获取标签列表
-router.get('/queryAllTags',passport.authenticate("jwt", {session: false}),async (req,res)=>{
+router.get('/queryAllTags',async (req,res)=>{
     await tags.find()
         .then(data=>{
             if(data.length>0){
