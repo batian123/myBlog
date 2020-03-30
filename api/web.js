@@ -43,7 +43,8 @@ router.get('/queryAllBlog',async (req,res)=>{
         })
 })
 // 分页查询博客列表
-router.get('/queryPageBlog',passport.authenticate("jwt", {session: false,failureRedirect: '/api/web/auth' }),async (req,res)=>{
+// router.get('/queryPageBlog',passport.authenticate("jwt", {session: false,failureRedirect: '/api/web/auth' }),async (req,res)=>{
+router.get('/queryPageBlog',async (req,res)=>{
     // console.log(req)
     let bodyInfo = {
         pageSize:req.query.pageSize,
