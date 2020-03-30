@@ -831,7 +831,13 @@ router.get('/auth', (req, res, next) => {
 
     let header = req.headers;
     console.log('kkkkkk',header.authorization)
-    let rawToken = header.authorization
+    let rawToken = header.authorization;
+    if(rawToken==undefined){
+        res.statusCode = 200
+        res.setHeader('Content-Type', 'application/json')
+        res.json({success: true, status: '1001',magess:'用户未登陆请登录'});
+        return ;
+    }
     if (!rawToken.split(' ').length) {
         res.json({ // 统一的数据结构方便前端使用
             code: 403,
