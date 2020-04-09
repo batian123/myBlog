@@ -16,6 +16,4 @@ mongoose.connect('mongodb://localhost:27017/My_blog', {
     useUnifiedTopology: true
 }).then(() => {
     console.log(`Mongodb is Connected.Please have a great coding.`);
-}).catch(err=>{
-    console.log('出现错误了：',err)
 })

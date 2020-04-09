@@ -20,7 +20,8 @@ module.exports = (req, res) => {
     form.keepExtensions = true;
     form.maxFieldsSize = 5 * 1024 *1024;
     form.parse(req, (err, fields, files) => {
-        let file = files.file;
+        console.log('files:',files)
+        let file = files.file||files.upfile;
         /* 如果出错，则拦截 */
         if(err) {
             return res.status(500).json({status: "500", result: '服务器内部错误'});

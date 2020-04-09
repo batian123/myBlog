@@ -27,7 +27,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="ts.external.directory.path" value="D:\xuexigongju\webstorm\xxcv\WebStorm 2019.2.1\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
   </component>
   <component name="RunDashboard">
@@ -70,7 +70,8 @@
       <workItem from="1580626104895" duration="28542000" />
       <workItem from="1581507524067" duration="305000" />
       <workItem from="1581507871094" duration="613000" />
-      <workItem from="1583205564712" duration="76174000" />
+      <workItem from="1583205564712" duration="77996000" />
+      <workItem from="1585535041134" duration="29521000" />
     </task>
     <servers />
   </component>

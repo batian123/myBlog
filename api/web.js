@@ -23,6 +23,7 @@ const links = require("../dbModel/links");
 const tagBlogId = require("../dbModel/tag_blog");
 const tags = require("../dbModel/tags");
 const user = require("../dbModel/user");
+const access = require("../dbModel/access");
 
 
 const uploadImg = require('../tool/uploadImg');
@@ -51,16 +52,18 @@ router.get('/queryAllBlog',async (req,res)=>{
     }
     let info =req.query.tags;
     if(info){
+        let pp = await  blogall.find({tags:{$regex:info}});
         await blogall.find({tags:{$regex:info}}).limit(parseInt(bodyInfo.pageSize)).skip(parseInt(bodyInfo.pageIndex))
             .then(blogList=>{
                 if(blogList.length>0){
-                    blogall.find({tags:info}).countDocuments()
+                    blogall.find({tags:{$regex:info}}).countDocuments()
                         .then(data=>{
                             res.send({
                                 massage:'查询成功',
                                 status:1,
                                 bloglist:blogList,
-                                total:data
+                                total:pp.length,
+                                pp:data
                             })
                         })
 
@@ -119,7 +122,7 @@ router.get('/queryOneBlog',async (req,res)=>{
 // 更新一条博客
 router.post('/updateOneBlog',async (req,res)=>{
     let info = req.body;
-    await blogall.updateOne({_id:info.id},{$set:{title:info.title,content:info.content,tags:info.tags}})
+    await blogall.updateOne({_id:info.id},{$set:{title:info.title,content:info.content,tags:info.tags,imgCover:info.imgCover,abstract:info.abstract}})
         .then(data=>{
             if(data.nModified!=0){
                 res.send(data)
@@ -162,12 +165,14 @@ router.post('/dellBatchBlog',async (req,res)=>{
 const multer = require('multer')
 const upload = multer({dest: __dirname + '/../uploads'})
 router.post('/upload',upload.single('file'),async (req,res)=>{
+
     const file = req.file;
-    file.url = `http://127.0.0.1:8633/uploads/${file.filename}`
+    file.url = `http://www.bxwblog.cn/uploads/${file.filename}`
     res.status(200).send({status:200,data:{url:file.url,pp:file }})
 })
 
 router.post("/uploadImg",  async (req, res) => {
+    console.log(req)
     await uploadImg(req, res);
 })
 
@@ -666,7 +671,7 @@ router.post('/login',async (req,res)=>{
                         username: backData.username,
                         phone: backData.phone,
                     };
-                    jwt.sign(rule, jwt_key, {expiresIn:'60s'}, (err, token) =>{
+                    jwt.sign(rule, jwt_key, {expiresIn:'1h'}, (err, token) =>{
                         if(err){
                             return res.status(500).json({status:"500",result:"未知错误"});
                         }else{
@@ -750,5 +755,55 @@ router.get('/auth', (req, res, next) => {
         })
     }
 })
+
+// 获取访问数
+router.get('/queryAllAccess',async (req,res)=>{
+    await access.find()
+        .then(data=>{
+            if(data.length>0){
+                res.send(data)
+            }
+            res.end();
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+})
+// 新增一个访问数
+router.post('/insertAccess',async (req,res)=>{
+    let arrop = new access(req.body)
+    await arrop.save()
+        .then(blogList=>{
+            res.send('添加成功')
+        })
+})
+// 更新一个访问数
+router.post('/updateOneAccess',async (req,res)=>{
+    let info = req.body;
+    console.log('这是查询的id：',info)
+    await access.updateOne({_id:info._id},{$set:{count:info.count}})
+        .then(data=>{
+            console.log(data)
+            if(data.nModified!=0){
+                res.send(data)
+            }
+            else{
+                // res.send(402,'更新失败')
+                res.status(404).send('更新失败')
+            }
+            // res.send(blogList)
+            res.end();
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+})
+router.get('/isPass',passport.authenticate("jwt", {session: false,failureRedirect: '/api/web/auth' }),async (req,res)=>{
+    res.send({
+        massage:'通过',
+        status:1,
+    })
+})
+
 
 module.exports = router;

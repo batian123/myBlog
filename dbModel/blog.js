@@ -39,6 +39,15 @@ const blogModel = new mongoose.Schema({
         require:true,
         type:Date,
         default: Date.now
+    },
+    imgCover:{
+        type:String
+    },
+    imgCoverName:{
+        type:String
+    },
+    abstract:{
+        type:String
     }
 })
 
