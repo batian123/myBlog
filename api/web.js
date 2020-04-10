@@ -167,7 +167,7 @@ const upload = multer({dest: __dirname + '/../uploads'})
 router.post('/upload',upload.single('file'),async (req,res)=>{
 
     const file = req.file;
-    file.url = `http://127.0.0.1:8633/uploads/${file.filename}`
+    file.url = `http://www.bxwblog.cn/uploads/${file.filename}`
     res.status(200).send({status:200,data:{url:file.url,pp:file }})
 })
 
