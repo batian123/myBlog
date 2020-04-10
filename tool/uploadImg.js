@@ -51,8 +51,8 @@ module.exports = (req, res) => {
             return res.status(412).json({status: "412", result: '只支持jpg和png格式图片'});
         }
         let aa = file.path.split('upload_')[1];
-        file.url = `http://www.bxwblog.cn/uploads/upload_${aa}`
-        console.log('这是file:',aa,file)
+        file.url = `http://127.0.0.1:8633/uploads/upload_${aa}`
+        // console.log('这是file:',aa,file)
         return res.send({'status': 200, 'msg': '图片上传成功1', data: {url: file.url,name:file.name}});
         // /* 拼接新的文件名 */
         // let time = formatTime.format(new Date(), 'YYYYMMDDHHmmss');

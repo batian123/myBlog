@@ -25,7 +25,7 @@ const tags = require("../dbModel/tags");
 const user = require("../dbModel/user");
 const access = require("../dbModel/access");
 
-
+const reqApi = require('request');
 const uploadImg = require('../tool/uploadImg');
 
 // 获取博客列表
@@ -167,12 +167,12 @@ const upload = multer({dest: __dirname + '/../uploads'})
 router.post('/upload',upload.single('file'),async (req,res)=>{
 
     const file = req.file;
-    file.url = `http://www.bxwblog.cn/uploads/${file.filename}`
+    file.url = `http://127.0.0.1:8633/uploads/${file.filename}`
     res.status(200).send({status:200,data:{url:file.url,pp:file }})
 })
 
 router.post("/uploadImg",  async (req, res) => {
-    console.log(req)
+    // console.log(req)
     await uploadImg(req, res);
 })
 
@@ -351,7 +351,7 @@ router.get('/queryAllComment',async (req,res)=>{
         pageIndex:(parseInt(req.query.pageIndex)-1)*(req.query.pageSize)
     }
     let count = '';
-    await comments.find().count().then(item=>{
+    await comments.find().countDocuments().then(item=>{
         count=item;
     })
     await comments.find().sort({ctime:-1}).limit(parseInt(bodyInfo.pageSize)).skip(parseInt(bodyInfo.pageIndex))
@@ -370,6 +370,51 @@ router.get('/queryAllComment',async (req,res)=>{
         })
         .catch(err=>{
             console.log(err)
+        })
+})
+// 获取所有评论列表显示博客名
+router.get('/queryAllCommentBlogName',async (req,res)=>{
+    // let blogIdBox = req.body.blogId;
+    let bodyInfo = {
+        pageSize:req.query.pageSize,
+        pageIndex:(parseInt(req.query.pageIndex)-1)*(req.query.pageSize)
+    }
+    let count = '';
+    await comments.find().countDocuments().then(item=>{
+        count=item;
+    })
+    comments.find().populate({path: 'blog_id',select: 'title author', model: blogall}).sort({ctime:-1}).limit(parseInt(bodyInfo.pageSize)).skip(parseInt(bodyInfo.pageIndex)).exec(function(err, order) {
+        res.send({
+            massage:'查询成功',
+            status:1,
+            rows:order,
+            cont:count
+        })
+    });
+    // await comments.find().sort({ctime:-1}).limit(parseInt(bodyInfo.pageSize)).skip(parseInt(bodyInfo.pageIndex))
+    //     .then(item=>{
+    //         if(item.length>0){
+    //             let arrComments = []
+    //             res.send({
+    //                 massage:'查询成功',
+    //                 status:1,
+    //                 rows:item,
+    //                 cont:count
+    //             })
+    //         }
+    //         // res.send(blogList)
+    //         res.end();
+    //     })
+    //     .catch(err=>{
+    //         console.log(err)
+    //     })
+})
+// 删除一条评论
+router.post('/dellComment',async (req,res)=>{
+    let arrop = req.body.id;
+    await comments.deleteOne({_id:arrop})
+        .then(data=>{
+            res.send(data)
         })
 })
 
@@ -803,6 +848,22 @@ router.get('/isPass',passport.authenticate("jwt", {session: false,failureRedirec
         massage:'通过',
         status:1,
     })
+})
+//毒鸡汤获取
+
+router.get('/getSoup', async(req,res)=>{
+    reqApi('https://data.zhai78.com/openOneGood.php', function (error, resp, body) {
+        if (!error && resp.statusCode == 200) {
+            res.send(body)
+            res.end();
+        } else {
+            res.status(200).send({
+                status:2,
+                maggess:'数据异常'
+            });
+            res.end();
+        }
+    });
 })
 
 

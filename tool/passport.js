@@ -22,11 +22,11 @@ module.exports = passport => {
         console.log(jwt_payload);   //jwt_payload就是用户信息
         User.findById(jwt_payload.id)
             .then(user => {
-                console.log('pp',user)
+                // console.log('pp',user)
                 if (user) {
                     return done(null, user);
                 } else {
-                    console.log('ppp')
+                    // console.log('ppp')
                     // Admin.findById(jwt_payload.id)
                     //     .then(admin => {
                     //         if(admin){
@@ -36,6 +36,7 @@ module.exports = passport => {
                     //             // or you could create a new account
                     //         }
                     //     })
+                    return done(null, false);
                 }
             })
     }));

@@ -52,7 +52,7 @@ app.use("/api/web", web);  // 音乐相关路由
 
 
 const port = process.env.PORT || 8633;
-app.listen(80, err => {
+app.listen(port, err => {
     if(err) throw err;
     console.log(`Server is running on port [${port}].`);
 
