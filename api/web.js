@@ -825,10 +825,10 @@ router.post('/insertAccess',async (req,res)=>{
 // 更新一个访问数
 router.post('/updateOneAccess',async (req,res)=>{
     let info = req.body;
-    console.log('这是查询的id：',info)
+    // console.log('这是查询的id：',info)
     await access.updateOne({_id:info._id},{$set:{count:info.count}})
         .then(data=>{
-            console.log(data)
+            // console.log(data)
             if(data.nModified!=0){
                 res.send(data)
             }
