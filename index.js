@@ -9,9 +9,10 @@ require("./mongodb/mongodb");  // 数据库
 require("./tool/passport")(passport);  // 验证token
 
 // 中间件
-app.use(express.json());
+// app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended:false}));
-var pp = bodyParser.urlencoded({ extended: false });
+// var pp = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.json());
 // app.use(passport.initialize());
 // app.use(passport.initialize());
