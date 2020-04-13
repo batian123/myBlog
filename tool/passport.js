@@ -19,7 +19,6 @@ opts.secretOrKey = Key;
 
 module.exports = passport => {
     passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-        console.log(jwt_payload);   //jwt_payload就是用户信息
         User.findById(jwt_payload.id)
             .then(user => {
                 // console.log('pp',user)

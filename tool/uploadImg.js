@@ -20,7 +20,7 @@ module.exports = (req, res) => {
     form.keepExtensions = true;
     form.maxFieldsSize = 5 * 1024 *1024;
     form.parse(req, (err, fields, files) => {
-        console.log('files:',files)
+        // console.log('files:',files)
         let file = files.file||files.upfile;
         /* 如果出错，则拦截 */
         if(err) {
